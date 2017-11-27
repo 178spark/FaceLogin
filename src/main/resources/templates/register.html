@@ -1,0 +1,115 @@
+<!DOCTYPE HTML >
+<html>
+<head>
+<title>验证</title>
+<script src="/js/jquery-1.7.2.js"></script>
+<style type="text/css">
+</style>
+</head>
+
+<body>
+	<video id="video1" autoplay="" width="320px" height="240px"></video>
+	<canvas id="canvas1" width="320" height="240"></canvas>
+	<form method="POST" id="form_id">
+		<p>
+			手机号<input type="text" name="telNumber" value="18224446274" />
+		</p>
+		<p>
+			姓名<input type="text" name="userName" value="杜松" />
+		</p>
+		<p>
+			性别<input type="text" name="sex" value="男" />
+		</p>
+		<p>
+			年龄<input type="text" name="age" value="26" />
+		</p>
+	</form>
+	<button onclick="scamera()">拍照</button>
+	<button onclick="uploadPhoto2()">上传</button>
+
+
+
+
+	<script type="text/javascript">
+		var video = document.getElementById("video1");//获取vedio对象
+
+		//将摄像头视频流放到vedio对象中
+		navigator.getUserMedia = navigator.getUserMedia
+				|| navigator.webkitGetUserMedia;
+		if (navigator.getUserMedia) {
+			if (navigator.webkitURL) {
+				navigator.getUserMedia("video1", function(stream) {
+					video.src = window.webkitURL.createObjectURL(stream);
+				}, function(error) {
+					alert(error);
+				});
+			} else {
+				navigator.getUserMedia({
+					video : true
+				}, function(stream) {
+					video.src = window.webkitURL.createObjectURL(stream);
+				}, function(error) {
+					alert(error);
+				});
+			}
+		} else {
+			alert("获取信息流有问题");
+		}
+
+		//拍照识别照片情况
+		function scamera() {
+			var videoElement = document.getElementById('video1');
+			var canvasObj = document.getElementById('canvas1');
+			var context1 = canvasObj.getContext('2d');
+			context1.fillStyle = "#ffffff";
+			context1.fillRect(0, 0, 320, 240);
+			context1.drawImage(videoElement, 0, 0, 320, 240);
+
+			var imgstr = document.getElementById('canvas1').toDataURL();
+
+			imgstr = imgstr.substring(22);
+			var data = {
+				img : imgstr
+			};
+
+			jQuery.ajax({
+				url : '/facedetect',
+				data : data,
+				type : "POST",
+				// 期待的返回值类型 
+				success : function(data) {
+					alert(data);
+				}
+			});
+		}
+
+		//用户注册
+		function register() {
+
+			var imgstr = document.getElementById('canvas1').toDataURL();
+
+			imgstr = imgstr.substring(22);
+			var user = $("#form_id").serialize();
+			user = decodeURIComponent(user, true);
+			var data = {
+				img : imgstr,
+				user : user,
+
+			};
+			jQuery.ajax({
+				url : '/faceregister',
+				data : data,
+				type : "POST",
+				// 期待的返回值类型 
+				success : function(data) {
+					if (data == "success") {
+						window.location.href = "/login";
+					} else {
+						alert(data);
+					}
+				}
+			});
+		}
+	</script>
+</body>
+</html>
