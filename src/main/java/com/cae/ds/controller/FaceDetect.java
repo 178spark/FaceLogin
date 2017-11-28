@@ -4,11 +4,12 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.HashMap;
 
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.baidu.aip.face.AipFace;
 
@@ -20,7 +21,7 @@ import com.baidu.aip.face.AipFace;
  * @date 2017年11月22日 下午8:41:21
  * @version V1.0
  */
-@Controller
+@RestController
 public class FaceDetect {
 	/**
 	 * @Description:上传图片流识别人脸
@@ -29,12 +30,13 @@ public class FaceDetect {
 	 * @return 返回识别的结果
 	 * @throws IOException
 	 * @author 杜松
+	 * @throws JSONException 
 	 * @date 2017年11月26日 下午3:38:37
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@RequestMapping("/facedetect")
 	@ResponseBody
-	public String faceDetect(@RequestParam("img") String imgstr) throws IOException {
+	public String faceDetect(@RequestParam("img") String imgstr) throws IOException, JSONException {
 		// 处理图片流编码
 		byte[] imgbytes = Base64.getDecoder().decode(imgstr);
 
@@ -52,7 +54,7 @@ public class FaceDetect {
 
 		// 将上传的图片文件流进行识别
 		JSONObject result = face.detect(imgbytes, options);
-		System.out.println(result);
+					
 		return result.toString();
 	}
 }

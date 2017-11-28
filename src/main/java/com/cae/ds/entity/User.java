@@ -9,11 +9,14 @@ package com.cae.ds.entity;
   * @version V1.0   
 */
 public class User {
-
-	private String telNumber;//电话号码
-	private String userName;//名字
-	private String sex;//性别
-	private String age;//年龄
+	
+	/*电话号码*/private String telNumber;
+	
+	/*名字*/private String userName;
+	
+	/*性别*/private String sex;
+	
+	/*年龄*/private String age;
 
 	
 	public String getTelNumber() {
@@ -46,3 +49,18 @@ public class User {
 	
 	
 }
+
+
+
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+

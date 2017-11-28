@@ -47,7 +47,7 @@ public class FaceRegister {
 			throws JSONException {
 
 		// 获取用户信息
-		User user = StringToUser(str);
+		User user = stringToUser(str);
 
 		// 处理图片流编码
 		byte[] imgbytes = Base64.getDecoder().decode(imgstr);
@@ -92,7 +92,7 @@ public class FaceRegister {
 	 * @author 杜松
 	 * @date 2017年11月26日 下午4:50:44
 	 */
-	public User StringToUser(String str) throws JSONException {
+	public User stringToUser(String str) throws JSONException {
 		User user = new User();
 		// 将序列化字符串转化为json格式
 		str = "{\"" + str + "\"}";
